@@ -1,4 +1,4 @@
-module go-sentry-cmd
+module github.com/Noksa/go-sentry-cmd
 
 go 1.13
 
