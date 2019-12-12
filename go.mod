@@ -1,4 +1,4 @@
-module sentry-wrapper
+module go-sentry-cmd
 
 go 1.13
 

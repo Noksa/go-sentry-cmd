@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sentry-wrapper.iml" filepath="$PROJECT_DIR$/.idea/sentry-wrapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/go-sentry-cmd.iml" filepath="$PROJECT_DIR$/.idea/go-sentry-cmd.iml" />
     </modules>
   </component>
 </project>

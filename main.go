@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/getsentry/sentry-go"
+	"go-sentry-cmd/models"
 	"os/exec"
-	"sentry-wrapper/models"
 	"strings"
 	"time"
 )
@@ -29,8 +29,6 @@ func main() {
 	}
 	sentry.Flush(time.Second * 5)
 }
-
-
 
 func parseFlags(config *models.Config) {
 	dsn := flag.String("dsn", "null", "Sentry DSN url")
