@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/Noksa/go-sentry-cmd/models"
@@ -21,11 +23,18 @@ func main() {
 	cmd1 := args[0]
 	args = append(args[:0], args[0+1:]...)
 	cmd := exec.Command(cmd1, args...)
+	var outBuffer = bytes.Buffer{}
+	var errBuffer = bytes.Buffer{}
+	cmd.Stdout = &outBuffer
+	cmd.Stderr = &errBuffer
 	cmdErr := cmd.Run()
 	if cmdErr != nil {
-		sentry.CaptureException(cmdErr)
+		var errorMsg = cmdErr.Error() + "\n" + "Additional data: " + errBuffer.String()
+		var newErr = errors.New(errorMsg)
+		sentry.CaptureException(newErr)
 	} else if config.ReportAll {
-		sentry.CaptureMessage(fmt.Sprintf("Command \"%v\" completed successfully", config.Command))
+		var res = outBuffer.String()
+		sentry.CaptureMessage(fmt.Sprintf("Command \"%v\" completed successfully\nResult: %v", config.Command, res))
 	}
 	sentry.Flush(time.Second * 5)
 }
