@@ -34,7 +34,7 @@ func main() {
 		sentry.CaptureException(newErr)
 	} else if config.ReportAll {
 		var res = outBuffer.String()
-		sentry.CaptureMessage(fmt.Sprintf("Command \"%v\" completed successfully\nResult: %v", config.Command, res))
+		sentry.CaptureMessage(fmt.Sprintf("Command \"%v\" completed successfully!\nResult: %v", config.Command, res))
 	}
 	sentry.Flush(time.Second * 5)
 }
