@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/Noksa/go-sentry-cmd/models"
 	"github.com/getsentry/sentry-go"
-	"go-sentry-cmd/models"
 	"os/exec"
 	"strings"
 	"time"
