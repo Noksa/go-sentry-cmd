@@ -29,7 +29,7 @@ func main() {
 	cmd.Stderr = &errBuffer
 	cmdErr := cmd.Run()
 	if cmdErr != nil {
-		var errorMsg = fmt.Sprintf("Command \"%v\" completed with errors!\nResult: ") + cmdErr.Error() + "\n" + "Additional data: " + errBuffer.String()
+		var errorMsg = fmt.Sprintf("Command \"%v\" completed with errors!\nResult: %v\nAdditional data: %v", config.Command, cmdErr.Error(), errBuffer.String())
 		var newErr = errors.New(errorMsg)
 		sentry.CaptureException(newErr)
 	} else if config.ReportAll {
