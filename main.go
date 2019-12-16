@@ -16,7 +16,7 @@ import (
 func main() {
 	var config = models.Config{}
 	parseFlags(&config)
-	err := sentry.Init(sentry.ClientOptions{Dsn: config.Dsn, Environment: config.Environment})
+	err := sentry.Init(sentry.ClientOptions{Dsn: config.Dsn, Environment: config.Environment, AttachStacktrace: true})
 	if err != nil {
 		panic(err)
 	}
@@ -29,6 +29,7 @@ func main() {
 	cmd.Stdout = &outBuffer
 	cmd.Stderr = &errBuffer
 	cmdErr := cmd.Run()
+	SetAdditionalInfo()
 	if cmdErr != nil {
 		var errorMsg = fmt.Sprintf("Command \"%v\" completed with errors!\nResult: %v\nAdditional data: %v", config.Command, cmdErr.Error(), errBuffer.String())
 		var newErr = errors.New(errorMsg)
@@ -68,4 +69,13 @@ func parseFlags(config *models.Config) {
 	config.Command = *command
 	config.Environment = *env
 	config.ReportAll = *reportAll
+}
+
+func SetAdditionalInfo() {
+	hostName := os.Getenv("SENTRY_HOSTNAME")
+	if hostName != "" {
+		sentry.ConfigureScope(func(scope *sentry.Scope) {
+			scope.SetTag("server_name", hostName)
+		})
+	}
 }
