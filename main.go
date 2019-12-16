@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/Noksa/go-sentry-cmd/models"
 	"github.com/getsentry/sentry-go"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -47,10 +48,21 @@ func parseFlags(config *models.Config) {
 	flag.Parse()
 
 	if *command == "null" {
-		panic("Command cant' be nil")
+		panic("Command cant' be nil or empty")
 	}
+
+	if *env == "undefined" {
+		osEnv := os.Getenv("SENTRY_ENVIRONMENT")
+		if osEnv != "" {
+			*env = osEnv
+		}
+	}
+
 	if *dsn == "null" {
-		panic("Dsn can't be nil")
+		*dsn = os.Getenv("SENTRY_DSN")
+		if *dsn == "" {
+			panic("Dsn can't be nil or empty")
+		}
 	}
 	config.Dsn = *dsn
 	config.Command = *command
